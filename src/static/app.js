@@ -516,9 +516,11 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     // Create difficulty badge (only shown when difficulty is specified)
-    const difficultyHtml = details.difficulty
-      ? `<span class="difficulty-badge difficulty-${details.difficulty.toLowerCase()}">${details.difficulty}</span>`
-      : "";
+    const validDifficulties = ["Beginner", "Intermediate", "Advanced"];
+    const difficultyHtml =
+      details.difficulty && validDifficulties.includes(details.difficulty)
+        ? `<span class="difficulty-badge difficulty-${details.difficulty.toLowerCase()}">${details.difficulty}</span>`
+        : "";
 
     // Create capacity indicator
     const capacityIndicator = `

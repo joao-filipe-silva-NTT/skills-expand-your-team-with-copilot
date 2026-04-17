@@ -30,6 +30,7 @@
   --error-light: #ffebee;
   --info: #0c5460;
   --info-light: #d1ecf1;
+  --warning-dark: #8a6d00;
 }
 
 * {
@@ -224,7 +225,7 @@ section h3 {
 
 .difficulty-intermediate {
   background-color: var(--warning-light);
-  color: #8a6d00;
+  color: var(--warning-dark);
 }
 
 .difficulty-advanced {
