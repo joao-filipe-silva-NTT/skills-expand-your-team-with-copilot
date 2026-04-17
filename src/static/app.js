@@ -552,6 +552,13 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("")}
         </ul>
       </div>
+      <div class="share-buttons">
+        <span class="share-label">Share:</span>
+        <button class="share-btn share-email" data-activity="${name}" title="Share via Email">✉️</button>
+        <button class="share-btn share-twitter" data-activity="${name}" title="Share on X">𝕏</button>
+        <button class="share-btn share-facebook" data-activity="${name}" title="Share on Facebook">f</button>
+        <button class="share-btn share-copy" data-activity="${name}" title="Copy link">🔗</button>
+      </div>
       <div class="activity-card-actions">
         ${
           currentUser
@@ -586,6 +593,39 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    // Add click handlers for share buttons
+    activityCard.querySelectorAll(".share-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const activityName = btn.dataset.activity;
+        const activityDetails = allActivities[activityName];
+        if (!activityDetails) return;
+        const pageUrl = window.location.href;
+        const shareText = `Check out "${activityName}" at Mergington High School! ${activityDetails.description}`;
+
+        if (btn.classList.contains("share-email")) {
+          const subject = encodeURIComponent(`Mergington High: ${activityName}`);
+          const body = encodeURIComponent(`${shareText}\n\nSchedule: ${formatSchedule(activityDetails)}\n\nLearn more: ${pageUrl}`);
+          window.open(`mailto:?subject=${subject}&body=${body}`, "_self");
+        } else if (btn.classList.contains("share-twitter")) {
+          const text = encodeURIComponent(shareText);
+          const url = encodeURIComponent(pageUrl);
+          window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank", "noopener,noreferrer");
+        } else if (btn.classList.contains("share-facebook")) {
+          const url = encodeURIComponent(pageUrl);
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, "_blank", "noopener,noreferrer");
+        } else if (btn.classList.contains("share-copy")) {
+          navigator.clipboard.writeText(`${shareText} - ${pageUrl}`).then(() => {
+            const original = btn.textContent;
+            btn.textContent = "✓";
+            setTimeout(() => { btn.textContent = original; }, 1500);
+          }).catch(() => {
+            showMessage("Could not copy link.", "error");
+          });
+        }
+      });
+    });
 
     activitiesList.appendChild(activityCard);
   }
