@@ -600,6 +600,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
         const activityName = btn.dataset.activity;
         const activityDetails = allActivities[activityName];
+        if (!activityDetails) return;
         const pageUrl = window.location.href;
         const shareText = `Check out "${activityName}" at Mergington High School! ${activityDetails.description}`;
 
